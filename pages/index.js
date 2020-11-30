@@ -1,9 +1,10 @@
 import Head from "next/head";
 import { useState } from "react";
 import styles from "../styles/Home.module.css";
-const [queriedMovies, setQueriedMovies] = useState([]);
 
 export default function Home() {
+  const [queriedMovies, setQueriedMovies] = useState([]);
+
   const searchMovies = async (e) => {
     e.preventDefault();
     console.log("submitting");
@@ -44,7 +45,7 @@ export default function Home() {
           <div
             style={{ borderStyle: "solid", width: "200px", height: "200px" }}
           >
-            {queriedMovie}
+            {queriedMovie.original_title}
           </div>
         ))}
       </main>
