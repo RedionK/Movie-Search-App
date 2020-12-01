@@ -22,8 +22,6 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
-      {console.log(movies)}
-
       <Head>
         <title>Movie App</title>
         <link rel="icon" href="/favicon.ico" />
