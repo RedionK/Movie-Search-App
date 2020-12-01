@@ -1,21 +1,29 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "../styles/Home.module.css";
 
 export default function Home() {
-  const [queriedMovies, setQueriedMovies] = useState([]);
+  const [query, setQuery] = useState("");
+  const [movies, setMovies] = useState([]);
 
   const searchMovies = async (e) => {
     e.preventDefault();
-    console.log("submitting");
-    const query = "Spider Man";
-    let URL = `https://api.themoviedb.org/3/search/movie?api_key=bb0fa06f949fe0af4ffdc970ba8e73c7&language=en-US&query=${query}&page=1&include_adult=false`;
-    fetch(URL).then((res) =>
-      res.json().then((json) => setQueriedMovies(json.results))
-    );
+
+    let URL = `https://api.themoviedb.org/3/search/movie?api_key=bb0fa06f949fe0af4ffdc970ba8e73c7&language=en-US&query=${query}&include_adult=false`;
+
+    try {
+      await fetch(URL)
+        .then((res) => res.json())
+        .then((json) => setMovies(json.results));
+    } catch (error) {
+      console.log(error);
+    }
   };
+
   return (
     <div className={styles.container}>
+      {console.log(movies)}
+
       <Head>
         <title>Movie App</title>
         <link rel="icon" href="/favicon.ico" />
@@ -36,18 +44,24 @@ export default function Home() {
           <label htmlFor="" className="label">
             Search your favorite movies:
           </label>{" "}
-          <input type="text" className="input" />
+          <input
+            type="text"
+            className="input"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+          />
           <button className="button" type="submit">
             Search
           </button>
         </form>
-        {queriedMovies.map((queriedMovie) => (
-          <div
-            style={{ borderStyle: "solid", width: "200px", height: "200px" }}
-          >
-            {queriedMovie.original_title}
-          </div>
-        ))}
+        <div className={styles.content}>
+          {movies.map((movie) => (
+            <div key={movie.id} className={styles.movieCard}>
+              {movie.title}
+              {movie.director}
+            </div>
+          ))}
+        </div>
       </main>
     </div>
   );
