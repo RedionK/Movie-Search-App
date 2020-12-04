@@ -9,6 +9,8 @@ export default function Home() {
 
   const [modalIsOpen, setIsOpen] = useState(false);
 
+  const [selectedMovie, setSelectedMovie] = useState({ title: "Manual Title" });
+
   const searchMovies = async (e) => {
     e.preventDefault();
 
@@ -23,7 +25,8 @@ export default function Home() {
     }
   };
 
-  const openModal = () => {
+  const openModal = (movie) => {
+    setSelectedMovie(movie);
     setIsOpen(true);
   };
 
@@ -67,21 +70,32 @@ export default function Home() {
           isOpen={modalIsOpen}
           // onAfterOpen={afterOpenModal}
           onRequestClose={closeModal}
-          className="modal"
           contentLabel="Example Modal"
         >
           <button onClick={closeModal}>close</button>
-          <div>
-            <div>{movie.title}</div>
+          <img
+            src={`http://image.tmdb.org/t/p/w185_and_h278_bestv2${selectedMovie.poster_path}`}
+          />
+
+          <div>{selectedMovie.title}</div>
+          <div>{selectedMovie.title}</div>
+          <div>{selectedMovie.release_date}</div>
+          <div>{selectedMovie.overview}</div>
+          <div className="rating">
+            <div className="upCount"></div>
+            <div className="up"></div>
+            <div className="downCount"></div>
+            <div className="down"></div>
           </div>
         </Modal>
+        {console.log(movies[0])}
         <div className={styles.content}>
           {movies
             .filter((movie) => movie.poster_path)
             .map((movie) => (
               <div key={movie.id} className={styles.movieCard}>
                 <img
-                  onClick={openModal}
+                  onClick={() => openModal(movie)}
                   className="card-image"
                   src={`http://image.tmdb.org/t/p/w185_and_h278_bestv2${movie.poster_path}`}
                   alt=""
