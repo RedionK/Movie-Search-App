@@ -1,10 +1,13 @@
 import Head from "next/head";
 import { useState, useEffect } from "react";
 import styles from "../styles/Home.module.css";
+import Modal from "react-modal";
 
 export default function Home() {
   const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
+
+  const [modalIsOpen, setIsOpen] = useState(false);
 
   const searchMovies = async (e) => {
     e.preventDefault();
@@ -18,6 +21,14 @@ export default function Home() {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
   };
 
   return (
@@ -52,13 +63,32 @@ export default function Home() {
             Search
           </button>
         </form>
+        <Modal
+          isOpen={modalIsOpen}
+          // onAfterOpen={afterOpenModal}
+          onRequestClose={closeModal}
+          className="modal"
+          contentLabel="Example Modal"
+        >
+          <button onClick={closeModal}>close</button>
+          <div>
+            <div>{movie.title}</div>
+          </div>
+        </Modal>
         <div className={styles.content}>
-          {movies.map((movie) => (
-            <div key={movie.id} className={styles.movieCard}>
-              {movie.title}
-              {movie.director}
-            </div>
-          ))}
+          {movies
+            .filter((movie) => movie.poster_path)
+            .map((movie) => (
+              <div key={movie.id} className={styles.movieCard}>
+                <img
+                  onClick={openModal}
+                  className="card-image"
+                  src={`http://image.tmdb.org/t/p/w185_and_h278_bestv2${movie.poster_path}`}
+                  alt=""
+                />
+                <div className="title">{movie.title}</div>
+              </div>
+            ))}
         </div>
       </main>
     </div>
