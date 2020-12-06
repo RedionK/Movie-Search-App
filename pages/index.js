@@ -6,10 +6,8 @@ import Modal from "react-modal";
 export default function Home() {
   const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
-
   const [modalIsOpen, setIsOpen] = useState(false);
-
-  const [selectedMovie, setSelectedMovie] = useState({ title: "Manual Title" });
+  const [selectedMovie, setSelectedMovie] = useState({});
 
   const searchMovies = async (e) => {
     e.preventDefault();
@@ -19,7 +17,11 @@ export default function Home() {
     try {
       await fetch(URL)
         .then((res) => res.json())
-        .then((json) => setMovies(json.results));
+        .then((json) =>
+          setMovies(
+            json.results.filter((movie) => movie.original_language !== "en")
+          )
+        );
     } catch (error) {
       console.log(error);
     }
@@ -82,18 +84,19 @@ export default function Home() {
           <div>{selectedMovie.release_date}</div>
           <div>{selectedMovie.overview}</div>
           <div className="rating">
-            <div className="upCount"></div>
-            <div className="up"></div>
-            <div className="downCount"></div>
-            <div className="down"></div>
+            <div className="upCount">Up Count</div>
+            <div className="up">Up Click</div>
+            <div className="downCount">Down Count</div>
+            <div className="down">Down Click</div>
           </div>
         </Modal>
-        {console.log(movies[0])}
+
         <div className={styles.content}>
           {movies
             .filter((movie) => movie.poster_path)
             .map((movie) => (
               <div key={movie.id} className={styles.movieCard}>
+                {console.log()}
                 <img
                   onClick={() => openModal(movie)}
                   className="card-image"
