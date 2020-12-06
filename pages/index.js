@@ -1,7 +1,8 @@
-import Head from "next/head";
 import { useState, useEffect } from "react";
 import styles from "../styles/Home.module.css";
 import Modal from "react-modal";
+
+import Meta from "../components/meta";
 
 export default function Home() {
   const [query, setQuery] = useState("");
@@ -38,10 +39,7 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
-      <Head>
-        <title>Movie App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <Meta />
 
       <header className="header">
         <div className="logo">Logo</div>
