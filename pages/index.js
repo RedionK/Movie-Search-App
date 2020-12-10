@@ -1,6 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styles from "../styles/Home.module.css";
 import Modal from "react-modal";
+
+// COMPONENT IMPORTS
 
 import Meta from "../components/meta";
 
